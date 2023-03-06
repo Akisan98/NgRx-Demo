@@ -1,27 +1,42 @@
-# Demo
+# Terms
+- Actions describe unique events that are dispatched from components and services.
+  - Does only have the name of action 
+- State changes are handled by pure functions called reducers that take the current state and the latest action to compute a new state.
+  - The code to add data to the store / perform the action described in actions.
+- Selectors are pure functions used to select, derive and compose pieces of state.
+  - Code for fetching data from store (Reverse Reducers)
+- State is accessed with the Store, an observable of state and an observer of actions.
+  - Reference to the store
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.2.
+# Flow
+Component has reference to store with DI:
 
-## Development server
+```typescript
+constructor(private store: Store<{ count: number }>) {
+  this.count$ = store.select('count');
+}
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Component will call dispatch with action defined in actions:
 
-## Code scaffolding
+```typescript
+this.store.dispatch(increment()); // Action = increment
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Action:
 
-## Build
+```typescript
+export const increment = createAction('[Counter Component] Increment');
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+String with component name and action
 
-## Running unit tests
+Calling dispatch will use the reducer to convert action to code:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+export const counterReducer = createReducer(
+  initialState,
+  on(increment, (state) => state + 1),
+);
+```
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
