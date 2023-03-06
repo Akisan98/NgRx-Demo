@@ -63,4 +63,5 @@ converted into state changes by the reducer again.
     )
   );
 ```
-
+## Note
+Reducer should not manipulate data only selector can
