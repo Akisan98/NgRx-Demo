@@ -34,7 +34,7 @@ export const increment = createAction('[Counter Component] Increment');
 
 String with component name and action
 
-Calling dispatch will use the effects or reducer to convert action to code:
+Calling dispatch will use the effects or reducer to convert action to into state changes / code:
 
 Reducer:
 
@@ -47,7 +47,9 @@ export const counterReducer = createReducer(
 
 Effects:
 
-Effects will make ex. Network Request, set Loading flags, and finally store the values into the store, so that component can subscribe to the store for data.
+Effects will make ex. Network Request, here you have to defined at least one action or specify that there will be no
+actions. These actions can be used to set Loading flags, store the values into the store, etc. these actions will be
+converted into state changes by the reducer again.
 
 ```typescript
 // Here we can also set isLoading Flags
