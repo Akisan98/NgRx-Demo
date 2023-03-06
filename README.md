@@ -7,10 +7,9 @@
   - Code for fetching data from store (Reverse Reducers)
 - State is accessed with the Store, an observable of state and an observer of actions.
   - Reference to the store
+- Reducers are only responsible for deciding which state transitions need to occur for a given action. In an application there is also a need to handle impure actions, such as AJAX requests, in NgRx we call them [Effects](https://ngrx.io/guide/effects).
+  - Move service calls from components
 
-- Reducers are only responsible for deciding which state transitions need to occur for a given action.
-
-  In an application there is also a need to handle impure actions, such as AJAX requests, in NgRx we call them [Effects](https://ngrx.io/guide/effects).
 
 # Flow
 Component has reference to store with DI:
@@ -35,12 +34,31 @@ export const increment = createAction('[Counter Component] Increment');
 
 String with component name and action
 
-Calling dispatch will use the reducer to convert action to code:
+Calling dispatch will use the effects or reducer to convert action to code:
+
+Reducer:
 
 ```typescript
 export const counterReducer = createReducer(
   initialState,
   on(increment, (state) => state + 1),
 );
+```
+
+Effects:
+
+Effects will make ex. Network Request, set Loading flags, and finally store the values into the store, so that component can subscribe to the store for data.
+
+```typescript
+// Here we can also set isLoading Flags
+  loadMovies$ = createEffect(() => this.actions$.pipe(
+    ofType('[Books Page] Load Books'),
+    exhaustMap(() => this.bookService.getBooks()
+      .pipe(
+        map(books => BooksApiActions.retrievedBookList({ books })),
+        catchError(() => EMPTY)
+      ))
+    )
+  );
 ```
 
