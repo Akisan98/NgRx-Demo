@@ -64,4 +64,7 @@ converted into state changes by the reducer again.
   );
 ```
 ## Note
-Reducer should not manipulate data only selector can
+Do not create an object in the function of the Selector. CreateSelector should only pass data, to not disturb the change detector.
+You can selector of an selector, but not selector of the state object
+
+Can always create more select.
